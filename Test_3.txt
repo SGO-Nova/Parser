@@ -1,0 +1,3 @@
+// This code should give out: PARSE ERROR
+
+x = 5

@@ -1,0 +1,4 @@
+//This coude should give out: (lparen, id, assign, number, rparen, id, assign, number, minus, id, times, lparen, number, div, number, rparen)
+
+
+/* This will test the single line code*/ (x := 5) y := 45 - x * (1234567890 / 0987654321)

@@ -1,0 +1,4 @@
+// This test text should give out: (read, id, id, assign, number, div, id, write, id)
+
+x := 5
+

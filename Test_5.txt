@@ -1,0 +1,7 @@
+/*
+
+Test multiple lines comments
+
+
+*/
+read x
