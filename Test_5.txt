@@ -5,3 +5,5 @@ Test multiple lines comments
 
 */
 read x
+
+write y

@@ -11,6 +11,8 @@ using namespace std;
 
 int counter;
 int r_w[6];
+char name[99];
+int index;
 
 struct tree_Node{
 	char name[10];            //current state's name
@@ -22,6 +24,7 @@ struct tree_Node{
 
 struct saved_token{
 	char token[10];           //name of the token
+	char id[99];
 	saved_token *next;        //next token for the file
 };
 
@@ -38,6 +41,7 @@ void Tree_Process();
 void Create_token(char token_type[10]);
 
 int main(int argc, char *argv[]){
+	index = 0;
 	FILE *fp;
 	fp = fopen(argv[argc - 1], "r");
 	char filename[MAX_CHAR];
@@ -85,41 +89,44 @@ int recursionXML(int state){
 	
 	switch(state){
 		case 0:
-			cout << "state " << state << " -> ";
+			cout << "state " << state;
 			state = 1;
 			ret = recursionXML(state);
 			if(ret == 0 && current_saved == NULL){
-				cout << "$$" << endl;
+				cout << " -> $$)" << endl;
 			}
 			else{
 				parseError();
 			}
 			break;
 		case 1:
-			cout << "state " << state << " -> ";
+			cout << " -> (state " << state;
 			state = 2;
 			ret = recursionXML(state);
 			if(ret == 0){
 				state = 1;
 				ret = recursionXML(state);
+				cout << ")";
 				return ret;
 			}
 			else{
+				cout << " -> E)";
 				return 0;
 			}
 			break;
 		case 2:
-			cout << "state " << state << " -> ";
+			cout << " -> (state " << state;
 			if(current_saved != NULL && current_saved -> token[0] == 'i'){
 				current_saved = current_saved -> next;
 				if(current_saved != NULL && current_saved -> token[0] == 'a'){
 					current_saved = current_saved -> next;
 					state = 3;
 					ret = recursionXML(state);
+					cout << ")";
 					return ret;
 				}
 				else{
-					cout << "BACKWARDS -> ";
+					cout << " -> BACKWARDS)";
 					return 1;
 				}
 			}
@@ -130,7 +137,7 @@ int recursionXML(int state){
 					return 0;
 				}
 				else{
-					cout << "BACKWARDS -> ";
+					cout << " -> BACKWARDS)";
 					return 1;
 				}
 			}
@@ -141,26 +148,27 @@ int recursionXML(int state){
 				return ret;
 			}
 			else{
-				cout << "BACKWARDS -> ";
+				cout << " -> BACKWARDS)";
 				return 1;
 			}
 			break;
 		case 3:
-			cout << "state " << state << " -> ";
+			cout << " -> (state " << state;
 			state = 5;
 			ret = recursionXML(state);
 			if(ret == 0){
 				state = 4;
 				ret = recursionXML(state);
+				cout << ")";
 				return ret;
 			}
 			else{
-				cout << "BACKWARDS -> ";
+				cout << " -> BACKWARDS)";
 				return 1;
 			}
 			break;
 		case 4:
-			cout << "state " << state << " -> ";
+			cout << " -> (state " << state;
 			state = 8;
 			ret = recursionXML(state);
 			if(ret == 0){
@@ -169,54 +177,59 @@ int recursionXML(int state){
 				if(ret == 0){
 					state = 4;
 					ret = recursionXML(state);
+					cout << ")";
 					return ret;
 				}
 				else{
-					cout << "BACKWARDS -> ";
+					cout << " -> BACKWARDS)";
 					return 1;
 				}
 			}
 			else{
+				cout << " -> E)";
 				return 0;
 			}
 			break;
 		case 5:
-			cout << "state " << state << " -> ";
+			cout << " -> (state " << state;
 			state = 7;
 			ret = recursionXML(state);
 			if(ret == 0){
 				state = 6;
 				ret = recursionXML(state);
+				cout << ")";
 				return ret;
 			}
 			else{
-				cout << "BACKWARDS -> ";
+				cout << " -> BACKWARDS)";
 				return 1;
 			}
 			break;
 		case 6:
-			cout << "state " << state << " -> ";
+			cout << " -> (state " << state;
 			state = 9;
 			ret = recursionXML(state);
 			if(ret == 0){
 				state = 7;
 				ret = recursionXML(state);
 				if(ret == 0){
-					state = 7;
+					state = 6;
 					ret = recursionXML(state);
+					cout << ")";
 					return ret;
 				}
 				else{
-					cout << "BACKWARDS -> ";
+					cout << " -> BACKWARDS)";
 					return 1;
 				}
 			}
 			else{
+				cout << " -> E)";
 				return 0;
 			}
 			break;
 		case 7:
-			cout << "state " << state << " -> ";
+			cout << " -> (state " << state;
 			if(current_saved != NULL && current_saved -> token[0] == 'l'){
 				current_saved = current_saved -> next;
 				state = 3;
@@ -226,7 +239,7 @@ int recursionXML(int state){
 					return 0;
 				}
 				else{
-					cout << "BACKWARDS -> ";
+					cout << " -> BACKWARDS)";
 					return 1;
 				}
 			}
@@ -239,14 +252,15 @@ int recursionXML(int state){
 				return 0;
 			}
 			else{
-				cout << "BACKWARDS -> ";
+				cout << " -> BACKWARDS)";
 				return 1;
 			}
 			break;
 		case 8:
-			cout << "state " << state << " -> ";
+			cout << " -> (state " << state;
 			if(current_saved != NULL && current_saved -> token[0] == 'p'){
 				current_saved = current_saved -> next;
+				cout << ")";
 				return 0;
 			}
 			else if(current_saved != NULL && current_saved -> token[0] == 'm'){
@@ -254,12 +268,12 @@ int recursionXML(int state){
 				return 0;
 			}
 			else{
-				cout << "BACKWARDS -> ";
+				cout << " -> BACKWARDS)";
 				return 1;
 			}
 			break;
 		case 9:
-			cout << "state " << state << " -> ";
+			cout << " -> (state " << state;
 			if(current_saved != NULL && current_saved -> token[0] == 't'){
 				current_saved = current_saved -> next;
 				return 0;
@@ -269,7 +283,7 @@ int recursionXML(int state){
 				return 0;
 			}
 			else{
-				cout << "BACKWARDS -> ";
+				cout << " -> BACKWARDS)";
 				return 1;
 			}
 			break;
@@ -300,8 +314,9 @@ void Interpreter(char character, char next){
 	cout << endl;
 	*/
 	
-	char read[10] = "read";
-	char write[10] = "write";
+	char read[10] = {"read"};
+	char write[10] = {"write"};
+	
 	
 	int current_ascii = (int)character;
 	int next_ascii = (int)next;
@@ -381,6 +396,8 @@ void Interpreter(char character, char next){
 			}
 		}
 		else if(current_ascii >= 48 && current_ascii <= 57){
+			name[index] = current_ascii;
+			index++;
 			current_tree = current_tree -> child;
 			while(current_tree -> state != 14){
 				current_tree = current_tree -> sibling;
@@ -392,6 +409,8 @@ void Interpreter(char character, char next){
 			}
 		}
 		else if((current_ascii >= 65 && current_ascii <= 90) || (current_ascii >= 97 && current_ascii <= 122)){
+			name[index] = current_ascii;
+			index++;
 			current_tree = current_tree -> child;
 			while(current_tree -> state != 16){
 				current_tree = current_tree -> sibling;
@@ -404,7 +423,7 @@ void Interpreter(char character, char next){
 			}
 		}
 		else{
-			cout << "PARSE ERROR" << endl;
+			cout << "ERROR" << endl;
 			exit(2);
 		}
 	}
@@ -454,8 +473,11 @@ void Interpreter(char character, char next){
 			//cout << "Created a 'number' Token" <<endl;
 			current_tree = start_tree;
 		}
-		else if(current_ascii == 46)
+		else if(current_ascii == 46){
+			name[index] = current_ascii;
+			index++;
 			current_tree = current_tree -> child;
+		}
 		
 	}
 	else if(current_tree -> state == 15){
@@ -463,17 +485,26 @@ void Interpreter(char character, char next){
 			Create_token(current_tree -> name);
 			//cout << "Created a 'number' Token" <<endl;
 		}
+		else{
+			name[index] = current_ascii;
+			index++;
+		}
 	}
 	else if(current_tree -> state == 16){	
 		if((next_ascii < 65 || next_ascii > 90) && (next_ascii < 97 || next_ascii > 122) && (next_ascii < 48 || next_ascii > 57)){
+			
 			if(counter < 6)
 				r_w[++counter] = current_ascii;
 			if(r_w[0] ==  114 && r_w[1] == 101 && r_w[2] == 97 && r_w[3] == 100 && r_w[4] == -1){
+				name[index] = current_ascii;
+				index++;
 				Create_token(read);
 				//cout << "Created a 'read' Token" <<endl;
 				current_tree = start_tree;
 			}
 			else if(r_w[0] ==  119 && r_w[1] == 114 && r_w[2] == 105 && r_w[3] == 116 && r_w[4] == 101 && r_w[5] == -1){
+				name[index] = current_ascii;
+				index++;
 				Create_token(write);
 				//cout << "Created a 'write' Token" <<endl;
 				current_tree = start_tree;
@@ -484,9 +515,13 @@ void Interpreter(char character, char next){
 				current_tree = start_tree;
 			}
 		}
-		else
-			if(counter < 6)
+		else{
+			name[index] = current_ascii;
+			index++;
+			if(counter < 6){
 				r_w[++counter] = current_ascii;
+			}
+		}
 	}
 }
 
@@ -557,6 +592,17 @@ void Create_token(char token_type[10]){ //This is the last file that we had to c
 	for(int i = 0; i < 10; i++){
 		temp1 -> token[i] = token_type[i];
 	}
+	for(int j = 0; j < 99; j++){
+		temp1 -> id[j] = name[j];
+		if(name[j] == 0){
+			break;
+		}
+	}
+	if(temp1 -> id[0] == 0){
+		for(int k = 0; k < 10; k++){
+			temp1 -> id[k] = temp1 -> token[k];
+		}
+	}
 	temp1 -> next = NULL;
 	if(start_saved == NULL){
 		start_saved = temp1;
@@ -566,5 +612,9 @@ void Create_token(char token_type[10]){ //This is the last file that we had to c
 		current_saved -> next = temp1;
 		current_saved = temp1;
 	}
-	
+	index = 0;
+	cout << temp1 -> id << endl;
+	for(int j = 0; j < 99; j++){
+		name[j] = 0;
+	}
 }
