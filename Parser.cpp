@@ -28,9 +28,15 @@ struct saved_token{
 	saved_token *next;        //next token for the file
 };
 
+struct queue{
+	char *print;
+	queue *next;
+};
+
 
 struct tree_Node *start_tree, *current_tree, *tmp;
 struct saved_token *start_saved, *current_saved;
+struct queue *front, *back, *tempQueue;
 
 void parseError();
 int recursionXML(int state);
@@ -39,6 +45,8 @@ void Interpreter(char character, char next);
 void Tree_Create(int state, char character[10], int terminator);
 void Tree_Process();
 void Create_token(char token_type[10]);
+void push(char id[99]);
+void pop();
 
 int main(int argc, char *argv[]){
 	index = 0;
@@ -53,6 +61,7 @@ int main(int argc, char *argv[]){
 		exit(1);
 	}
 	else{
+		back = front;
 		Tree_Process();
 		current_tree = start_tree;
 		Scan(argv[argc-1]);
@@ -61,6 +70,33 @@ int main(int argc, char *argv[]){
 	}
 	
 	//for later use when printing out the tokens
+	
+	tempQueue = front;
+	int tabs = 0;
+	while(tempQueue != NULL){
+		if(tempQueue -> print[0] == '<' && tempQueue -> print[1] == '/'){
+			tabs -= 1;
+			for(int i = tabs; i > 0; i--){
+				cout << " ";
+			};
+			cout << tempQueue -> print << endl;
+		}
+		else if(tempQueue -> print[0] == '<'){
+			for(int i = tabs; i > 0; i--){
+				cout << " ";
+			}
+			tabs++;
+			cout << tempQueue -> print << endl;
+		}
+		else{
+			for(int i = tabs; i > 0; i--){
+				cout << " ";
+			}
+			cout << tempQueue -> print << endl;
+		}
+		tempQueue = tempQueue -> next;
+	}
+	cout << endl;
 	
 	
 	current_saved = start_saved;
@@ -86,13 +122,18 @@ void parseError()
 	
 int recursionXML(int state){
 	int ret = 0;
+	char *temp;
 	
 	switch(state){
 		case 0:
 			cout << "state " << state;
+			temp = "<program>";
+			push(temp);
 			state = 1;
 			ret = recursionXML(state);
 			if(ret == 0 && current_saved == NULL){
+				temp = "</program>";
+				push(temp);
 				cout << " -> $$)" << endl;
 			}
 			else{
@@ -101,24 +142,43 @@ int recursionXML(int state){
 			break;
 		case 1:
 			cout << " -> (state " << state;
+			temp = "<stmt_list>";
+			push(temp);
 			state = 2;
 			ret = recursionXML(state);
 			if(ret == 0){
 				state = 1;
 				ret = recursionXML(state);
+				temp = "</stmt_list>";
+				push(temp);
 				cout << ")";
 				return ret;
 			}
 			else{
+				pop();
+				temp = "</stmt_list>";
+				push(temp);
 				cout << " -> E)";
 				return 0;
 			}
 			break;
 		case 2:
 			cout << " -> (state " << state;
+			temp = "<stmt>";
+			push(temp);
 			if(current_saved != NULL && current_saved -> token[0] == 'i'){
+				temp = "<id>";
+				push(temp);
+				push(current_saved -> id);
+				temp = "</id>";
+				push(temp);
 				current_saved = current_saved -> next;
 				if(current_saved != NULL && current_saved -> token[0] == 'a'){
+					temp = "<assign>";
+					push(temp);
+					push(current_saved -> id);
+					temp = "</assign>";
+					push(temp);
 					current_saved = current_saved -> next;
 					state = 3;
 					ret = recursionXML(state);
@@ -126,34 +186,53 @@ int recursionXML(int state){
 					return ret;
 				}
 				else{
-					cout << " -> BACKWARDS)";
-					return 1;
+					parseError();
 				}
 			}
 			else if(current_saved != NULL && current_saved -> token[1] == 'e'){
+				temp = "<read>";
+				push(temp);
+				push(current_saved -> id);
+				temp = "</read>";
+				push(temp);
 				current_saved = current_saved -> next;
 				if(current_saved != NULL && current_saved -> token[0] == 'i'){
+					temp = "<id>";
+					push(temp);
+					push(current_saved -> id);
+					temp = "</id>";
+					push(temp);
 					current_saved = current_saved -> next;
+					temp = "</stmt>";
+					push(temp);
 					return 0;
 				}
 				else{
-					cout << " -> BACKWARDS)";
-					return 1;
+					parseError();
 				}
 			}
 			else if(current_saved != NULL && current_saved -> token[0] == 'w'){
+				temp = "<write>";
+				push(temp);
+				push(current_saved -> id);
+				temp = "<write>";
+				push(temp);
 				current_saved = current_saved -> next;
 				state = 3;
 				ret = recursionXML(state);
+				cout << ")";
 				return ret;
 			}
 			else{
+				pop();
 				cout << " -> BACKWARDS)";
 				return 1;
 			}
 			break;
 		case 3:
 			cout << " -> (state " << state;
+			temp = "<expr>";
+			push(temp);
 			state = 5;
 			ret = recursionXML(state);
 			if(ret == 0){
@@ -163,12 +242,15 @@ int recursionXML(int state){
 				return ret;
 			}
 			else{
+				pop();
 				cout << " -> BACKWARDS)";
 				return 1;
 			}
 			break;
 		case 4:
 			cout << " -> (state " << state;
+			temp = "<term_tail>";
+			push(temp);
 			state = 8;
 			ret = recursionXML(state);
 			if(ret == 0){
@@ -181,17 +263,23 @@ int recursionXML(int state){
 					return ret;
 				}
 				else{
+					pop();
 					cout << " -> BACKWARDS)";
 					return 1;
 				}
 			}
 			else{
+				pop();
 				cout << " -> E)";
+				temp = "</term_tail>";
+				push(temp);
 				return 0;
 			}
 			break;
 		case 5:
 			cout << " -> (state " << state;
+			temp = "<term>";
+			push(temp);
 			state = 7;
 			ret = recursionXML(state);
 			if(ret == 0){
@@ -201,12 +289,15 @@ int recursionXML(int state){
 				return ret;
 			}
 			else{
+				pop();
 				cout << " -> BACKWARDS)";
 				return 1;
 			}
 			break;
 		case 6:
 			cout << " -> (state " << state;
+			temp = "<fact_tail>";
+			push(temp);
 			state = 9;
 			ret = recursionXML(state);
 			if(ret == 0){
@@ -219,70 +310,137 @@ int recursionXML(int state){
 					return ret;
 				}
 				else{
+					pop();
 					cout << " -> BACKWARDS)";
 					return 1;
 				}
 			}
 			else{
+				pop();
 				cout << " -> E)";
+				temp = "</fact_tail>";
+				push(temp);
 				return 0;
 			}
 			break;
 		case 7:
 			cout << " -> (state " << state;
+			temp = "<factor>";
+			push(temp);
 			if(current_saved != NULL && current_saved -> token[0] == 'l'){
+				temp = "<lparen>";
+				push(temp);
+				push(current_saved -> id);
+				temp = "</lparen>";
+				push(temp);
 				current_saved = current_saved -> next;
 				state = 3;
 				ret = recursionXML(state);
 				if(ret == 0 && current_saved != NULL && current_saved -> token[0] == 'r' && current_saved -> token[1] == 'p'){
+					temp = "<rparen>";
+					push(temp);
+					push(current_saved -> id);
+					temp = "</rparen>";
+					push(temp);
 					current_saved = current_saved -> next;
+					temp = "</factor>";
+					push(temp);
 					return 0;
 				}
 				else{
+					pop();
 					cout << " -> BACKWARDS)";
 					return 1;
 				}
 			}
 			else if(current_saved != NULL && current_saved -> token[0] == 'i'){
+				temp = "<id>";
+				push(temp);
+				push(current_saved -> id);
+				temp = "</id>";
+				push(temp);
 				current_saved = current_saved -> next;
+				temp = "</factor>";
+				push(temp);
 				return 0;
 			}
 			else if(current_saved != NULL && current_saved -> token[0] == 'n'){
+				temp = "<number>";
+				push(temp);
+				push(current_saved -> id);
+				temp = "</number>";
+				push(temp);
 				current_saved = current_saved -> next;
+				temp = "</factor>";
+				push(temp);
 				return 0;
 			}
 			else{
+				pop();
 				cout << " -> BACKWARDS)";
 				return 1;
 			}
 			break;
 		case 8:
 			cout << " -> (state " << state;
+			temp = "<add_op>";
+			push(temp);
 			if(current_saved != NULL && current_saved -> token[0] == 'p'){
+				temp = "<plus>";
+				push(temp);
+				push(current_saved -> id);
+				temp = "</plus>";
+				push(temp);
 				current_saved = current_saved -> next;
-				cout << ")";
+				temp = "</add_op>";
+				push(temp);
 				return 0;
 			}
 			else if(current_saved != NULL && current_saved -> token[0] == 'm'){
+				temp = "<minus>";
+				push(temp);
+				push(current_saved -> id);
+				temp = "</minus>";
+				push(temp);
 				current_saved = current_saved -> next;
+				temp = "</add_op>";
+				push(temp);
 				return 0;
 			}
 			else{
+				pop();
 				cout << " -> BACKWARDS)";
 				return 1;
 			}
 			break;
 		case 9:
 			cout << " -> (state " << state;
+			temp = "<mult_op>";
+			push(temp);
 			if(current_saved != NULL && current_saved -> token[0] == 't'){
+				temp = "<times>";
+				push(temp);
+				push(current_saved -> id);
+				temp = "</times>";
+				push(temp);
 				current_saved = current_saved -> next;
+				temp = "</mult_op>";
+				push(temp);
 				return 0;
 			}
 			else if(current_saved != NULL && current_saved -> token[0] == 'd'){
+				temp = "<div>";
+				push(temp);
+				push(current_saved -> id);
+				temp = "</div>";
+				push(temp);
 				current_saved = current_saved -> next;
+				temp = "</mult_op>";
+				push(temp);
 				return 0;
 			}
 			else{
+				pop();
 				cout << " -> BACKWARDS)";
 				return 1;
 			}
@@ -617,4 +775,25 @@ void Create_token(char token_type[10]){ //This is the last file that we had to c
 	for(int j = 0; j < 99; j++){
 		name[j] = 0;
 	}
+}
+
+void push(char id[99]){
+	queue *temp1 = (queue*)malloc(sizeof(queue));
+	temp1 -> print = id;
+	if(front == NULL){
+		front = temp1;
+	}
+	else{
+		back -> next = temp1;
+		tempQueue = back;
+	}
+	back = temp1;
+	temp1 -> next = NULL;
+	cout << "[Next -> " << back -> print << "]";
+}
+
+void pop(){
+	back = tempQueue;
+	//back = back -> next;
+	cout << "[Next -> " << back -> print << "]";
 }
