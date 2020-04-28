@@ -77,40 +77,26 @@ int main(int argc, char *argv[]){
 		if(tempQueue -> print[0] == '<' && tempQueue -> print[1] == '/'){
 			tabs -= 1;
 			for(int i = tabs; i > 0; i--){
-				cout << " ";
+				cout << "|  ";
 			};
 			cout << tempQueue -> print << endl;
 		}
 		else if(tempQueue -> print[0] == '<'){
 			for(int i = tabs; i > 0; i--){
-				cout << " ";
+				cout << "|  ";
 			}
 			tabs++;
 			cout << tempQueue -> print << endl;
 		}
 		else{
 			for(int i = tabs; i > 0; i--){
-				cout << " ";
+				cout << "|  ";
 			}
 			cout << tempQueue -> print << endl;
 		}
 		tempQueue = tempQueue -> next;
 	}
 	cout << endl;
-	
-	
-	current_saved = start_saved;
-	cout << "(";
-	while(current_saved != NULL){
-		cout << current_saved -> token;
-		if(current_saved -> next != NULL){
-			cout << ", ";
-		}
-		current_saved = current_saved -> next;
-	}
-	
-	cout << ")" << endl;
-	
 	return 0;
 }
 
@@ -126,7 +112,6 @@ int recursionXML(int state){
 	
 	switch(state){
 		case 0:
-			cout << "state " << state;
 			temp = "<program>";
 			push(temp);
 			state = 1;
@@ -134,14 +119,12 @@ int recursionXML(int state){
 			if(ret == 0 && current_saved == NULL){
 				temp = "</program>";
 				push(temp);
-				cout << " -> $$)" << endl;
 			}
 			else{
 				parseError();
 			}
 			break;
 		case 1:
-			cout << " -> (state " << state;
 			temp = "<stmt_list>";
 			push(temp);
 			state = 2;
@@ -151,19 +134,16 @@ int recursionXML(int state){
 				ret = recursionXML(state);
 				temp = "</stmt_list>";
 				push(temp);
-				cout << ")";
 				return ret;
 			}
 			else{
 				pop();
 				temp = "</stmt_list>";
 				push(temp);
-				cout << " -> E)";
 				return 0;
 			}
 			break;
 		case 2:
-			cout << " -> (state " << state;
 			temp = "<stmt>";
 			push(temp);
 			if(current_saved != NULL && current_saved -> token[0] == 'i'){
@@ -182,7 +162,8 @@ int recursionXML(int state){
 					current_saved = current_saved -> next;
 					state = 3;
 					ret = recursionXML(state);
-					cout << ")";
+					temp = "</stmt>";
+					push(temp);
 					return ret;
 				}
 				else{
@@ -215,22 +196,21 @@ int recursionXML(int state){
 				temp = "<write>";
 				push(temp);
 				push(current_saved -> id);
-				temp = "<write>";
+				temp = "</write>";
 				push(temp);
 				current_saved = current_saved -> next;
 				state = 3;
 				ret = recursionXML(state);
-				cout << ")";
+				temp = "</stmt>";
+				push(temp);
 				return ret;
 			}
 			else{
 				pop();
-				cout << " -> BACKWARDS)";
 				return 1;
 			}
 			break;
 		case 3:
-			cout << " -> (state " << state;
 			temp = "<expr>";
 			push(temp);
 			state = 5;
@@ -238,17 +218,16 @@ int recursionXML(int state){
 			if(ret == 0){
 				state = 4;
 				ret = recursionXML(state);
-				cout << ")";
+				temp = "</expr>";
+				push(temp);
 				return ret;
 			}
 			else{
 				pop();
-				cout << " -> BACKWARDS)";
 				return 1;
 			}
 			break;
 		case 4:
-			cout << " -> (state " << state;
 			temp = "<term_tail>";
 			push(temp);
 			state = 8;
@@ -259,25 +238,21 @@ int recursionXML(int state){
 				if(ret == 0){
 					state = 4;
 					ret = recursionXML(state);
-					cout << ")";
 					return ret;
 				}
 				else{
 					pop();
-					cout << " -> BACKWARDS)";
 					return 1;
 				}
 			}
 			else{
 				pop();
-				cout << " -> E)";
 				temp = "</term_tail>";
 				push(temp);
 				return 0;
 			}
 			break;
 		case 5:
-			cout << " -> (state " << state;
 			temp = "<term>";
 			push(temp);
 			state = 7;
@@ -285,17 +260,16 @@ int recursionXML(int state){
 			if(ret == 0){
 				state = 6;
 				ret = recursionXML(state);
-				cout << ")";
+				temp = "</term>";
+				push(temp);
 				return ret;
 			}
 			else{
 				pop();
-				cout << " -> BACKWARDS)";
 				return 1;
 			}
 			break;
 		case 6:
-			cout << " -> (state " << state;
 			temp = "<fact_tail>";
 			push(temp);
 			state = 9;
@@ -306,25 +280,23 @@ int recursionXML(int state){
 				if(ret == 0){
 					state = 6;
 					ret = recursionXML(state);
-					cout << ")";
+					temp = "</fact_tail>";
+					push(temp);
 					return ret;
 				}
 				else{
 					pop();
-					cout << " -> BACKWARDS)";
 					return 1;
 				}
 			}
 			else{
 				pop();
-				cout << " -> E)";
 				temp = "</fact_tail>";
 				push(temp);
 				return 0;
 			}
 			break;
 		case 7:
-			cout << " -> (state " << state;
 			temp = "<factor>";
 			push(temp);
 			if(current_saved != NULL && current_saved -> token[0] == 'l'){
@@ -349,7 +321,6 @@ int recursionXML(int state){
 				}
 				else{
 					pop();
-					cout << " -> BACKWARDS)";
 					return 1;
 				}
 			}
@@ -377,12 +348,10 @@ int recursionXML(int state){
 			}
 			else{
 				pop();
-				cout << " -> BACKWARDS)";
 				return 1;
 			}
 			break;
 		case 8:
-			cout << " -> (state " << state;
 			temp = "<add_op>";
 			push(temp);
 			if(current_saved != NULL && current_saved -> token[0] == 'p'){
@@ -409,12 +378,10 @@ int recursionXML(int state){
 			}
 			else{
 				pop();
-				cout << " -> BACKWARDS)";
 				return 1;
 			}
 			break;
 		case 9:
-			cout << " -> (state " << state;
 			temp = "<mult_op>";
 			push(temp);
 			if(current_saved != NULL && current_saved -> token[0] == 't'){
@@ -441,7 +408,6 @@ int recursionXML(int state){
 			}
 			else{
 				pop();
-				cout << " -> BACKWARDS)";
 				return 1;
 			}
 			break;
@@ -613,7 +579,7 @@ void Interpreter(char character, char next){
 			current_tree = start_tree;
 		}
 		else{
-			cout << "PARSE ERROR" << endl;
+			cout << "ERROR" << endl;
 			exit(2);
 		}	
 	}
@@ -621,7 +587,7 @@ void Interpreter(char character, char next){
 		if(current_ascii >= 48 && current_ascii <= 57)
 			current_tree = current_tree -> child;
 		else{
-			cout << "PARSE ERROR" << endl;
+			cout << "ERROR" << endl;
 			exit(2);
 		}
 	}
@@ -771,7 +737,6 @@ void Create_token(char token_type[10]){ //This is the last file that we had to c
 		current_saved = temp1;
 	}
 	index = 0;
-	cout << temp1 -> id << endl;
 	for(int j = 0; j < 99; j++){
 		name[j] = 0;
 	}
@@ -789,11 +754,9 @@ void push(char id[99]){
 	}
 	back = temp1;
 	temp1 -> next = NULL;
-	cout << "[Next -> " << back -> print << "]";
 }
 
 void pop(){
 	back = tempQueue;
 	//back = back -> next;
-	cout << "[Next -> " << back -> print << "]";
 }
