@@ -1,33 +1,40 @@
+Blake McLaughlin, Ryan Browning
+Group 34
+Report
+
 1)    Data Structures:
-     Linked-Lists: 
+    Linked-Lists: We used the linked lists to operate as tokens in order to set up the necessary tokens to represent the context-free-grammer used by the parser.
 
-      Multi-child Tree:
+    Multi-child Tree: This tree will be used primarily in the Tree_Process & Create_Token functions where we create and functionalize the tokenizer tree. 
 
-      Arrays:
+    Arrays: Required in order to store the contents from the txt file.
 
-      Queue:
+    Queue: The queue is used in order to temporarily store the recorded data from the tokenizer tree until they are ready to be printed out.
 
-  2)    Functions:
+ 2)    Functions:
      Main Function:
 
-      Parse Error:
+     Parse Error:
 
-      recursionXML:
+     recursionXML:
 
-      Scan:
+     Scan:
 
-      Interpreter:
+     Interpreter:
 
-      Tree_Create:
+     Tree_Create:
 
-      Tree_Process:
+     Tree_Process:
 
-      Create_Token:
+     Create_Token:
 
-      Push:
+     Push:
 
-      pop:
+     pop:
 
-  3)    Test files:
+  3)   Test files:
 
-  4)    N/A
+  4)   Acknoledgement: N/A
+  
+  Pseudocode:
+  
