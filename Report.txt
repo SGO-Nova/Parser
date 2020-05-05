@@ -12,25 +12,56 @@ Report
     Queue: The queue is used in order to temporarily store the recorded data from the tokenizer tree until they are ready to be printed out.
 
  2)    Functions:
-     Main Function:
+     Tokenizer(int state, char character, char token [])
+     Main Function: 
+     Data: 
+     Purpose: The purpose of the main function is to take the txt file that needs to be read and send it through the token tree, starting the token push.
+     Expected Output: 
 
-     Parse Error:
+     Function 1_Parse Error - 
+     Data:
+     Purpose: The parse error function will need to come into play when there's an error in the parsing section of the program.
+     Expected Output:
 
-     recursionXML:
+     Function 2_recursionXML - 
+     Data:
+     Purpose: The recursion function is going to be built to make nine different cases built to give the tokens names depending on the order that they go into the token tree.
+     Expected Output:
 
-     Scan:
+     Function 3_Scan - 
+     Data:
+     Purpose: The scan function is built to open and read the .txt test file and push the contents onto the Interpreter function.
+     Expected Output:
 
-     Interpreter:
+     Function 4_Interpreter - 
+     Data:
+     Purpose: 
+     Expected Output:
 
-     Tree_Create:
+     Function 5_Tree_Create - 
+     Data:
+     Purpose: The purpose of this function is to build a token tree that will pass tokens based off the .txt reading file in order to build the expected output.
+     Expected Output:
 
-     Tree_Process:
+     Function 6_Tree_Process - 
+     Data:
+     Purpose: The tree process function will help formulate the flow between node to node in the tokenizer tree, it is required in order to tell the program which node comes next in the tree.
+     Expected Output:
 
-     Create_Token:
+     Function 7_Create_Token -     
+     Data:
+     Purpose: The purpose of this function will be to create the actual tokens that will go through the token tree, and end up representing the parser's finalized output.
+     Expected Output:
 
-     Push:
+     Function 8_Push - 
+     Data:
+     Purpose: The push and pop function will be designated to act as a queue for the tokens in their final stage before being outputted as a parser.
+     Expected Output:
 
-     pop:
+     Function 9_pop:
+     Data:
+     Purpose:
+     Expected Output:
 
   3)   Test files:
 
