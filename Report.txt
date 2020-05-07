@@ -35,7 +35,7 @@ Report
 
      Function 4_Interpreter - 
      Data:
-     Purpose: 
+     Purpose: The interpreter function is required in order to take the individual nodes and set individual signs throughout the tokenizer tree which will also attribute the values across the tree.
      Expected Output:
 
      Function 5_Tree_Create - 
