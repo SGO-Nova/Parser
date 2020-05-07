@@ -67,17 +67,26 @@ Report
   
 
   3)   Test files:
-  Below are examples reguarding the 5 test files we made examples based off of:
   I)
-  
-  II)
-  
+     // This test text should give out: (read, id, id, assign, number, div, id, write, id)
+     x := 5
+  II)  
+     //This coude should give out: (lparen, id, assign, number, rparen, id, assign, number, minus, id, times, lparen, number,       div, number, rparen)
+     read A
   III)
-  
+     //This code should give out: PARSE ERROR
+     x = 5
   IV)
-  
+     //This code should give out: (number, plus, number)
+     3+4.2
   V)
-  
+     /*
+
+     Test multiple lines comments
+
+     */
+     read x
+     write y
 
   4)   Acknoledgement: N/A
   
