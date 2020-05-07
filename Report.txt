@@ -18,32 +18,32 @@ Report
      Purpose: The purpose of the main function is to take the txt file that needs to be read and send it through the token tree, starting the token push.
      Expected Output: 
 
-     Function 1_Parse Error - 
+     Function 1 Parse Error - 
      Data:
      Purpose: The parse error function will need to come into play when there's an error in the parsing section of the program.
      Expected Output: Proof of Parsing error if such test file has an error in it.
 
-     Function 2_recursionXML - 
+     Function 2 recursionXML - 
      Data: int state
      Purpose: The recursion function is going to be built to make nine different cases built to give the tokens names depending on the order that they go into the token tree.
      Expected Output: 
 
-     Function 3_Scan - 
+     Function 3 Scan - 
      Data: char *file
      Purpose: The scan function is built to open and read the .txt test file and push the contents onto the Interpreter function.
      Expected Output: To be able to scan .txt test file in order to push into DFA tree, then into Parser.
 
-     Function 4_Interpreter - 
+     Function 4 Interpreter - 
      Data: char character[], char next
      Purpose: The interpreter function is required in order to take the individual nodes and set individual signs throughout the tokenizer tree which will also attribute the values across the tree.
      Expected Output: To be able to use interpret the character's used pushed through this function in order to tell values of the tokens.
 
-     Function 5_Tree_Create - 
+     Function 5 Tree_Create - 
      Data: int state, char character[10], int terminator
      Purpose: The purpose of this function is to build a token tree that will pass tokens based off the .txt reading file in order to build the expected output.
      Expected Output: 
 
-     Function 6_Tree_Process - 
+     Function 6 Tree_Process - 
      Data: 
      Purpose: The tree process function will help formulate the flow between node to node in the tokenizer tree, it is required in order to tell the program which node comes next in the tree.
      Expected Output: 
@@ -64,10 +64,108 @@ Report
      Expected Output: To have a function to pop the tokens out of the push queue and place them into the parser's expected order.
      
   %%%%Psuedocode%%%% :
+  
   Start of the .cpp file{
   Base parser off of the Scanner.cpp
-  Use DFA's functions 
+  Use the scanner program for the following:
+  Scan         (To read and scan the test.txt file)
+  Interpreter  (To attach values based on the tokens pushed through the DFA tree)
+  Tree_Create  (To make the skeleton of the DFA tree)
+  Tree_Process (To create the flow of the tree)
+  Create_Token (To create the tokens)
   
+  Create new functions:
+  recursionXML (To assign 
+  push         (To act as the motion going into a queue)
+  pop          (To take from the queue)
+  
+  Will need push and pop function to make a queue to store the values in after the recursion function.
+  
+  recursionXML{
+  char *temp;
+  switch (){
+  Case 0:
+  temp var is <program>
+  Make <program> as the first state for recursion
+  x = recursionXML()
+  if(x == 0 && current_saved == NULL)
+  else{ 
+  insert error
+  }
+  Case 1:
+  temp var == stmt_list
+  state = 2
+  x = recursionXML()
+  if(x == 0){
+       state = 1
+       x = recursionXML()
+       temp var == /stmt_list
+  }
+  else{
+       pop it out of the queue
+      }
+  Case 2:
+  temp var is <stmt>
+  if(current_saved != NULL && current_saved -> token[0] == "a"){
+    temp = "<assign>"
+    push(temp) and push(current_saved->id);
+    temp = "</assign>"
+    current_saved = current_saved->next
+    state = 3
+    set temporary var to </stmt>
+    }
+    else{
+    insert parse error message
+    }
+   }
+   else if(current_saved != NULL && current_saved -> token[1]){
+    temp variable == <read>
+    push temp var and current_saved -> id
+    temp var == </read>
+    push temp var
+    current_saved = current_saved -> next;
+    temp var is </stmt>, push temp
+    }
+    else{
+    if anything else, return error
+    }}
+    else if(current_saved != NULL && current_saved -> token[0]){
+    temp var is <write>, push temp 
+    push current -> id
+    temp var is </write>, push temp
+    temp var is </stmt>, push temp
+    }
+    else{
+        pop()
+        }
+    break;
+    Case 3:
+        temp var is <expr>, push temp
+        state is at 5
+        x is recursionXML()
+        if(x == 0){
+            state is at 4
+            x is recursionXML()
+            }
+            else{
+            pop()
+            }
+       break;
+   Case 4:
+        temp var is <term_tail>, push temp
+        The state is at 8
+        x = recursionXML()
+        if(x == 0){
+            The state is at 5
+            x is recursionXML()
+            if(x == 0){
+                state is at 4
+                x is recursionXML(), so return x
+                }
+            else{
+            pop out and return 1
+            }
+        
   
   
 
