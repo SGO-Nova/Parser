@@ -21,49 +21,54 @@ Report
      Function 1_Parse Error - 
      Data:
      Purpose: The parse error function will need to come into play when there's an error in the parsing section of the program.
-     Expected Output:
+     Expected Output: Proof of Parsing error if such test file has an error in it.
 
      Function 2_recursionXML - 
      Data: int state
      Purpose: The recursion function is going to be built to make nine different cases built to give the tokens names depending on the order that they go into the token tree.
-     Expected Output:
+     Expected Output: 
 
      Function 3_Scan - 
      Data: char *file
      Purpose: The scan function is built to open and read the .txt test file and push the contents onto the Interpreter function.
-     Expected Output:
+     Expected Output: To be able to scan .txt test file in order to push into DFA tree, then into Parser.
 
      Function 4_Interpreter - 
      Data: char character[], char next
      Purpose: The interpreter function is required in order to take the individual nodes and set individual signs throughout the tokenizer tree which will also attribute the values across the tree.
-     Expected Output:
+     Expected Output: To be able to use interpret the character's used pushed through this function in order to tell values of the tokens.
 
      Function 5_Tree_Create - 
      Data: int state, char character[10], int terminator
      Purpose: The purpose of this function is to build a token tree that will pass tokens based off the .txt reading file in order to build the expected output.
-     Expected Output:
+     Expected Output: 
 
      Function 6_Tree_Process - 
      Data: 
      Purpose: The tree process function will help formulate the flow between node to node in the tokenizer tree, it is required in order to tell the program which node comes next in the tree.
-     Expected Output:
+     Expected Output: 
 
      Function 7_Create_Token -     
      Data: char token_type[10]
      Purpose: The purpose of this function will be to create the actual tokens that will go through the token tree, and end up representing the parser's finalized output.
-     Expected Output:
+     Expected Output: 
 
      Function 8_Push - 
      Data: char id[99]
      Purpose: The push and pop function will be designated to act as a queue for the tokens in their final stage before being outputted as a parser.
-     Expected Output:
+     Expected Output: To have a place to put the token's after they go through the tokenizer tree, which has a storage to act like a queue.
 
      Function 9_pop:
      Data:
      Purpose: The pop function will simply need to be able to output each in the required order to formulate the parser from the queue.
-     Expected Output:
+     Expected Output: To have a function to pop the tokens out of the push queue and place them into the parser's expected order.
      
-  Psuedocode:
+  %%%%Psuedocode%%%% :
+  Start of the .cpp file{
+  Base parser off of the Scanner.cpp
+  Use DFA's functions 
+  
+  
   
 
   3)   Test files:
