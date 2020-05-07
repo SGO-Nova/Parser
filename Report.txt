@@ -62,10 +62,16 @@ Report
      Data:
      Purpose: The pop function will simply need to be able to output each in the required order to formulate the parser from the queue.
      Expected Output:
+     
+  Psuedococde:
+  
 
   3)   Test files:
+  Below are examples reguarding the 5 test files we made examples based off of:
+  I)
+  
 
   4)   Acknoledgement: N/A
   
-  Pseudocode:
+  
   
