@@ -104,7 +104,8 @@ Report
   else{
        pop it out of the queue
       }
-  Case 2:
+ break this case
+ Case 2:
   temp var is <stmt>
   if(current_saved != NULL && current_saved -> token[0] == "a"){
     temp = "<assign>"
@@ -138,7 +139,7 @@ Report
     else{
         pop()
         }
-    break;
+    break this case
     Case 3:
         temp var is <expr>, push temp
         state is at 5
@@ -150,7 +151,7 @@ Report
             else{
             pop()
             }
-       break;
+       break this case
    Case 4:
         temp var is <term_tail>, push temp
         The state is at 8
@@ -164,7 +165,126 @@ Report
                 }
             else{
             pop out and return 1
+            }}
+         else{
+                pop();
+                temp is </term_tail>, push temp
+                }
+         break this case
+    Case 5:
+            temp is <term>, push temp
+            state is at 7
+            x = recursionXML()
+            if(x ==0){
+                state is at 6
+                x = recursionXML()
+                temp var is </term>, push temp
+                }
+            else{
+            pop();
             }
+         break this case
+     Case 6:
+            temp is <fact_tail>, push temp
+            the state is now at 9
+            x = recursionXML()
+            if(x == 0){
+                the state is now at 7
+                x = recursionXML()
+                if(x == 0){
+                    the state is now at 6
+                    x = recursionXML()
+                    temp var is </fact_tail>, push temp
+                    }
+                    else{
+                        pop()
+                    }
+               }
+               else{
+               pop()
+               temp var is </fact_tail>, push temp
+               }
+           break this case
+       Case 7:
+            temp is <factor>, push temp 
+            if(current_saved != NULL && current_saved -> token[0]){
+                temp var = <lparen>, push temp
+                temp var = </lparen>, push temp
+                current_saved = current_saved goes to next
+                the state goes to 3
+                x = recursionXML()
+                if(x = 0 && current_saved != NULL && current_saved -> token[0])
+                        temp var = <rparen>, push temp
+                        temp var = </rparen>, push temp
+                        temp var = </factor>, push temp
+                        }
+                else{
+                        pop()
+                        }
+                 }
+               else if(current_saved != NULL && current_saved -> token[0]){
+                    temp var = <number>, push temp
+                    temp var = </number>, push temp
+                    temp var = </factor>, push temp
+                    }
+                    else{
+                        pop()
+                        }
+                   break this case
+                        
+         Case 8:
+                temp var = <add_op>, push temp
+                if(current_saved != NULL && current_saved ->token[0]){
+                        temp var = <plus>, push temp
+                        temp var = </plus>, push temp
+                        current_saved = current_saved goes to next
+                        temp var = </add_op>, push temp
+                        }
+                else if(current_saved != NULL && current_saved -> token[0])
+                        temp var = <minus>, push temp
+                        temp var = </minus>, push temp
+                        current_saved = current_saved goes to next
+                        temp var = </add_op>, push temp
+                        }
+                else{
+                        pop()
+                        }
+                   break this case
+          Case 9:
+                temp var = <mult_op>, push temp
+                if(current_saved != NULL && curren_saved -> token[0])
+                    temp var = <div>, push temp
+                    temp var = <times>, push temp
+                    temp var = </times>, push temp
+                    current_saved = current_saved goes to next
+                    temp var = </mult_op>, push temp
+                    }
+                else if (current_saved != NULL && current_saved -> token[0]){
+                        temp var = <div>, push temp
+                        temp var = </div>, push temp
+                        current_saved = current_saved goes to next
+                        temp var = </mult_op>, push temp
+                        }
+                else{
+                pop()
+                }
+          break this case 
+                     
+ }
+ 
+ push()
+    create a function that acts as a unit that pushes tokens from the recursionXML func into a queue
+    if(front == NULL){
+        front is equal to temp1
+        }
+        else{
+        back goes to next = temp1
+        temp1 goes to the next node which equals NULL
+        }
+  
+ pop()
+    the pop function simply takes tokens out of the queue
+    the push will be needed to be used first in order for pop to function
         
   
   
