@@ -18,15 +18,14 @@ Report
      Purpose: The purpose of the main function is to take the txt file that needs to be read and send it through the token tree, starting the token push.
      Expected Output: 
 
-     Function 1 Parse Error - 
-     Data:
+     Function 1 Parse Error -
      Purpose: The parse error function will need to come into play when there's an error in the parsing section of the program.
      Expected Output: Proof of Parsing error if such test file has an error in it.
 
      Function 2 recursionXML - 
      Data: int state
      Purpose: The recursion function is going to be built to make nine different cases built to give the tokens names depending on the order that they go into the token tree.
-     Expected Output: 
+     Expected Output: The parsing to be ready to by popped out in the expected order.
 
      Function 3 Scan - 
      Data: char *file
@@ -41,17 +40,16 @@ Report
      Function 5 Tree_Create - 
      Data: int state, char character[10], int terminator
      Purpose: The purpose of this function is to build a token tree that will pass tokens based off the .txt reading file in order to build the expected output.
-     Expected Output: 
+     Expected Output: To create a skeleton tree for the tree_process function to use.
 
-     Function 6 Tree_Process - 
-     Data: 
+     Function 6 Tree_Process -
      Purpose: The tree process function will help formulate the flow between node to node in the tokenizer tree, it is required in order to tell the program which node comes next in the tree.
-     Expected Output: 
+     Expected Output: To be able to properly order the tree.
 
      Function 7_Create_Token -     
      Data: char token_type[10]
      Purpose: The purpose of this function will be to create the actual tokens that will go through the token tree, and end up representing the parser's finalized output.
-     Expected Output: 
+     Expected Output: To have tokens to be able to run through the DFA tree.
 
      Function 8_Push - 
      Data: char id[99]
@@ -59,7 +57,6 @@ Report
      Expected Output: To have a place to put the token's after they go through the tokenizer tree, which has a storage to act like a queue.
 
      Function 9_pop:
-     Data:
      Purpose: The pop function will simply need to be able to output each in the required order to formulate the parser from the queue.
      Expected Output: To have a function to pop the tokens out of the push queue and place them into the parser's expected order.
      
